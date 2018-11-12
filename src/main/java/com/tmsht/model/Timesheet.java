@@ -3,34 +3,49 @@ package com.tmsht.model;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Timesheet {
 
+	@JsonProperty(value = "id")
 	private int id;
-	private String taskName;
-	private String projectId;
+
+	@JsonProperty(value = "task")
+	private Task task;
+
+	@JsonProperty(value = "project")
+	private Project project;
+
+	@JsonProperty(value = "date")
 	private LocalDate date;
+
+	@JsonProperty(value = "startTime")
 	private LocalTime startTime;
+
+	@JsonProperty(value = "endTime")
 	private LocalTime endTime;
+
+	@JsonProperty(value = "status")
 	private String status;
 
 	public Timesheet() {
 
 	}
 
-	public String getTaskName() {
-		return taskName;
+	public Task getTask() {
+		return task;
 	}
 
-	public void setTaskName(String taskName) {
-		this.taskName = taskName;
+	public void setTask(Task task) {
+		this.task = task;
 	}
 
-	public String getProjectId() {
-		return projectId;
+	public Project getProject() {
+		return project;
 	}
 
-	public void setProjectId(String projectId) {
-		this.projectId = projectId;
+	public void setProject(Project project) {
+		this.project = project;
 	}
 
 	public int getId() {

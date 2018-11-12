@@ -2,12 +2,14 @@ package com.tmsht.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -36,13 +38,55 @@ public class TimesheetDaoImpl implements TimesheetDao {
 	}
 
 	@Override
-	public boolean addTimesheets(List<Timesheet> timesheets) {
-		return false;
+	public boolean addTimesheetsByEmployeeId(List<Timesheet> timesheets, int employeeId) {
+		StringBuilder sql = new StringBuilder();
+		sql.append("INSERT INTO timesheet ");
+		sql.append("(");
+		sql.append("tmesht_tsk_id, tmesht_emp_id, tmesht_date, tmesht_start_time, ");
+		sql.append("tmesht_end_time, tmesht_status");
+		sql.append(")");
+		sql.append("VALUES ");
+		sql.append("(");
+		sql.append(":tmesht_tsk_id, :tmesht_emp_id, :tmesht_date, :tmesht_start_time, ");
+		sql.append(":tmesht_end_time, :tmesht_status");
+		sql.append(")");
+
+		List<Map<String, Object>> batchValues = new ArrayList<>(timesheets.size());
+		timesheets.forEach(timesheet -> {
+			batchValues.add(new MapSqlParameterSource("tmesht_tsk_id", timesheet.getTask().getId())
+					.addValue("tmesht_emp_id", employeeId).addValue("tmesht_date", timesheet.getDate())
+					.addValue("tmesht_start_time", timesheet.getStartTime())
+					.addValue("tmesht_end_time", timesheet.getEndTime())
+					.addValue("tmesht_status", timesheet.getStatus()).getValues());
+		});
+
+		namedParameterJdbcTemplate.batchUpdate(sql.toString(), batchValues.toArray(new Map[timesheets.size()]));
+
+		return true;
+
 	}
 
 	@Override
-	public boolean updateTimesheets(List<Timesheet> timesheets) {
-		return false;
+	public boolean updateTimesheetsByEmployeeId(List<Timesheet> timesheets, int employeeId) {
+		StringBuilder sql = new StringBuilder();
+
+		sql.append("UPDATE timesheet SET ");
+		sql.append("tmesht_tsk_id =:tmesht_tsk_id, ");
+		sql.append("tmesht_start_time =:tmesht_start_time, ");
+		sql.append("tmesht_end_time =:tmesht_end_time ");
+		sql.append("WHERE tmesht_id =:tmesht_id");
+
+		List<Map<String, Object>> batchValues = new ArrayList<>(timesheets.size());
+		timesheets.forEach(timesheet -> {
+			batchValues.add(new MapSqlParameterSource("tmesht_tsk_id", timesheet.getTask().getId())
+					.addValue("tmesht_emp_id", employeeId).addValue("tmesht_date", timesheet.getDate())
+					.addValue("tmesht_start_time", timesheet.getStartTime())
+					.addValue("tmesht_end_time", timesheet.getEndTime()).addValue("tmesht_id", timesheet.getId())
+					.getValues());
+		});
+
+		namedParameterJdbcTemplate.batchUpdate(sql.toString(), batchValues.toArray(new Map[timesheets.size()]));
+		return true;
 	}
 
 	@Override
@@ -55,14 +99,19 @@ public class TimesheetDaoImpl implements TimesheetDao {
 		@Override
 		public Timesheet mapRow(ResultSet rs, int rowNum) throws SQLException {
 			Timesheet timesheet = new Timesheet();
+			Project project = new Project();
+			Task task = new Task();
+
+			project.setProjectId(rs.getString("prj_project_id"));
+			task.setName(rs.getString("tsk_name"));
 
 			timesheet.setDate(rs.getDate("tmesht_date").toLocalDate());
 			timesheet.setEndTime(rs.getTime("tmesht_end_time").toLocalTime());
 			timesheet.setId(rs.getInt("tmesht_id"));
-			timesheet.setProjectId(rs.getString("prj_project_id"));
 			timesheet.setStartTime(rs.getTime("tmesht_start_time").toLocalTime());
 			timesheet.setStatus(rs.getString("tmesht_status"));
-			timesheet.setTaskName(rs.getString("tsk_name"));
+			timesheet.setTask(task);
+			timesheet.setProject(project);
 
 			return timesheet;
 		}

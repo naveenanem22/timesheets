@@ -3,17 +3,38 @@ package com.tmsht.model;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Project {
 
+	@JsonProperty(value = "id")
 	private int id;
+
+	@JsonProperty(value = "tasks")
 	private List<Task> tasks;
+
+	@JsonProperty(value = "projectId")
 	private String projectId;
+
+	@JsonProperty(value = "serviceType")
 	private String serviceType;
+
+	@JsonProperty(value = "description")
 	private String description;
+
+	@JsonProperty(value = "plannedStartDate")
 	private LocalDate plannedStartDate;
+
+	@JsonProperty(value = "plannedEndDate")
 	private LocalDate plannedEndDate;
+
+	@JsonProperty(value = "actualStartDate")
 	private LocalDate actualStartDate;
+
+	@JsonProperty(value = "actualEndDate")
 	private LocalDate actualEndDate;
+
+	@JsonProperty(value = "status")
 	private String status;
 
 	public Project() {

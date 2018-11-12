@@ -23,4 +23,16 @@ public class TimesheetServiceImpl implements TimesheetService {
 		return timesheetDao.getTimesheetsByEmployeeId(employeeId);
 	}
 
+	@Override
+	@Transactional
+	public boolean addTimesheetsByEmployeeId(List<Timesheet> timesheets, int employeeId) {
+		return timesheetDao.addTimesheetsByEmployeeId(timesheets, employeeId);
+	}
+
+	@Override
+	@Transactional
+	public boolean updateTimesheetsByEmployeeId(List<Timesheet> timesheets, int employeeId) {
+		return timesheetDao.updateTimesheetsByEmployeeId(timesheets, employeeId);
+	}
+
 }
