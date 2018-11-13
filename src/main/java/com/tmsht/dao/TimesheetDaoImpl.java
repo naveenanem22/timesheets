@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -22,6 +24,8 @@ public class TimesheetDaoImpl implements TimesheetDao {
 
 	@Autowired
 	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+
+	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
 	@Override
 	public List<Timesheet> getTimesheetsByEmployeeId(int employeeId) {
@@ -68,6 +72,8 @@ public class TimesheetDaoImpl implements TimesheetDao {
 
 	@Override
 	public boolean updateTimesheetsByEmployeeId(List<Timesheet> timesheets, int employeeId) {
+		LOGGER.debug("Received the employeeId: " + employeeId);
+		LOGGER.debug("Received the timesheets data: " + timesheets.toString());
 		StringBuilder sql = new StringBuilder();
 
 		sql.append("UPDATE timesheet SET ");

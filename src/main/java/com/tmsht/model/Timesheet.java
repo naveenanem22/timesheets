@@ -88,4 +88,12 @@ public class Timesheet {
 		this.status = status;
 	}
 
+	@Override
+	public String toString() {
+		return "Timesheet [id=" + id + ", task=" + task + ", project=" + project + ", date=" + date + ", startTime="
+				+ startTime + ", endTime=" + endTime + ", status=" + status + "]";
+	}
+	
+	
+
 }
