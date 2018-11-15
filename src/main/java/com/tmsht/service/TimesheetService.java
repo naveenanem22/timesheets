@@ -11,4 +11,12 @@ public interface TimesheetService {
 
 	boolean updateTimesheetsByEmployeeId(List<Timesheet> timesheets, int employeeId);
 
+	boolean approveTimeSheetsByTimesheetId(List<Integer> timesheetIds);
+
+	boolean rejectTimeSheetsByTimesheetId(List<Integer> timesheetIds);
+
+	boolean createNextLevelTimesheetApprovalRecord(List<Integer> timesheetIds, int employeeId);
+	
+	boolean generateTimesheetApprovalRecordsByEmployeeId(List<Integer> timesheetIds, int employeeId);
+
 }

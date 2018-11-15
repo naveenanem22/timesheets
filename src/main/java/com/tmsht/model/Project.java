@@ -121,4 +121,14 @@ public class Project {
 		this.status = status;
 	}
 
+	@Override
+	public String toString() {
+		return "Project [id=" + id + ", tasks=" + tasks + ", projectId=" + projectId + ", serviceType=" + serviceType
+				+ ", description=" + description + ", plannedStartDate=" + plannedStartDate + ", plannedEndDate="
+				+ plannedEndDate + ", actualStartDate=" + actualStartDate + ", actualEndDate=" + actualEndDate
+				+ ", status=" + status + "]";
+	}
+	
+	
+
 }

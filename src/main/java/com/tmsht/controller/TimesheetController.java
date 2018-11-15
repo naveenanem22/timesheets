@@ -31,7 +31,7 @@ public class TimesheetController {
 	@Autowired
 	@Qualifier("timesheetServiceImpl")
 	private TimesheetService timesheetService;
-	
+
 	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
 	@GetMapping
@@ -51,10 +51,18 @@ public class TimesheetController {
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Object> addTimesheets(@PathVariable("id") int employeeId,
 			@Valid @RequestBody List<Timesheet> timesheets) {
-		LOGGER.debug("Received the employeeId: "+employeeId);
-		LOGGER.debug("Received the timesheets data: "+timesheets.toString());
+		LOGGER.debug("Received the employeeId: " + employeeId);
+		LOGGER.debug("Received the timesheets data: " + timesheets.toString());
 		timesheetService.addTimesheetsByEmployeeId(timesheets, employeeId);
 		return ResponseEntity.noContent().build();
+
+	}
+
+	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "/approvals")
+	public void generateTimesheetApprovals(@RequestBody List<Integer> timesheetIds,
+			@PathVariable("id") int employeeId) {
+		
+		timesheetService.generateTimesheetApprovalRecordsByEmployeeId(timesheetIds, employeeId);
 
 	}
 

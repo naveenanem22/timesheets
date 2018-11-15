@@ -12,5 +12,7 @@ public interface TimesheetDao {
 	boolean updateTimesheetsByEmployeeId(List<Timesheet> timesheets, int employeeId);
 
 	boolean deleteTimesheetsById(List<Integer> timesheetIds);
+	
+	boolean createTimesheetApprovalRecordsByTimesheetId(List<Integer> timesheetIds, List<Integer> managerEmployeeIds);
 
 }

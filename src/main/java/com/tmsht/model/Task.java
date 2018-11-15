@@ -52,4 +52,9 @@ public class Task {
 		this.description = description;
 	}
 
+	@Override
+	public String toString() {
+		return "Task [id=" + id + ", name=" + name + ", description=" + description + ", project=" + project + "]";
+	}
+
 }

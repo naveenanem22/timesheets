@@ -6,13 +6,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import com.tmsht.model.Project;
@@ -24,6 +28,9 @@ public class TimesheetDaoImpl implements TimesheetDao {
 
 	@Autowired
 	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+
+	@Autowired
+	private JdbcTemplate jdbcTemplate;
 
 	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
@@ -43,6 +50,8 @@ public class TimesheetDaoImpl implements TimesheetDao {
 
 	@Override
 	public boolean addTimesheetsByEmployeeId(List<Timesheet> timesheets, int employeeId) {
+		LOGGER.debug("Received the employeeId: " + employeeId);
+		LOGGER.debug("Received the timesheets data: " + timesheets.toString());
 		StringBuilder sql = new StringBuilder();
 		sql.append("INSERT INTO timesheet ");
 		sql.append("(");
@@ -122,6 +131,22 @@ public class TimesheetDaoImpl implements TimesheetDao {
 			return timesheet;
 		}
 
+	}
+
+	@Override
+	public boolean createTimesheetApprovalRecordsByTimesheetId(List<Integer> timesheetIds,
+			List<Integer> managerEmployeeIds) {
+		LOGGER.debug("Received the employeeId: " + timesheetIds.toString());
+		LOGGER.debug("Received the timesheets data: " + managerEmployeeIds.toString());
+		String timesheetIdsListAsString = timesheetIds.stream().map(timesheetId -> String.valueOf(timesheetId))
+				.collect(Collectors.joining(","));
+		String managerEmployeeIdsAsString = managerEmployeeIds.stream()
+				.map(managerEmployeeId -> String.valueOf(managerEmployeeId)).collect(Collectors.joining(","));
+
+		jdbcTemplate.update("call pmapinew.spInsertTimesheetApprovals(?,?,?,?)", timesheetIdsListAsString,
+				managerEmployeeIdsAsString, timesheetIds.size(), managerEmployeeIds.size());
+
+		return false;
 	}
 
 }
