@@ -2,7 +2,9 @@
 Timesheets is a section of APIs under RESTFul ERP-HR solution. These APIs predominantly deal with the functionalities such as - Employee's time tracking, project management.
 
 ## Modules
-* Resource Allocation: Inorder for an employee's efforts to be tracked, he needs to be assignged to a task. This module deals with allocating resources to various tasks under projects specific to a customer. Point to note is that Resources has to be assigned to the Task but not the otherway round.
+* **Resource Allocation**: In order for an employee's efforts to be tracked, he/she needs to be assigned to a task(s). This module deals with allocating resources to various tasks under projects specific to a customer. A resource can be assigned multiple tasks and vice versa.
+
+* **Project Management**: In general any organization runs projects for their customers to engage their work-force. In a highlevel, the management of Customers and their projects come under this module. The hierarchy is modeled in the following way - Each Customer will have Projects, Each Project will have Tasks. Hence, Customer -> Project -> Task.
 
 ## Technologies
 <b>Built with</b>
