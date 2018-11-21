@@ -2,6 +2,7 @@ package com.tmsht.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,8 +14,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.SqlOutParameter;
+import org.springframework.jdbc.core.SqlParameter;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
@@ -136,17 +140,29 @@ public class TimesheetDaoImpl implements TimesheetDao {
 	@Override
 	public boolean createTimesheetApprovalRecordsByTimesheetId(List<Integer> timesheetIds,
 			List<Integer> managerEmployeeIds) {
-		LOGGER.debug("Received the employeeId: " + timesheetIds.toString());
-		LOGGER.debug("Received the timesheets data: " + managerEmployeeIds.toString());
+		LOGGER.debug("Received the timesheetIds: " + timesheetIds.toString());
+		LOGGER.debug("Received the managerEmployeeIds: " + managerEmployeeIds.toString());
 		String timesheetIdsListAsString = timesheetIds.stream().map(timesheetId -> String.valueOf(timesheetId))
 				.collect(Collectors.joining(","));
 		String managerEmployeeIdsAsString = managerEmployeeIds.stream()
 				.map(managerEmployeeId -> String.valueOf(managerEmployeeId)).collect(Collectors.joining(","));
 
-		jdbcTemplate.update("call pmapinew.spInsertTimesheetApprovals(?,?,?,?)", timesheetIdsListAsString,
-				managerEmployeeIdsAsString, timesheetIds.size(), managerEmployeeIds.size());
+		SimpleJdbcCall call = new SimpleJdbcCall(jdbcTemplate).withProcedureName("spInsertTimesheetApprovals")
+				.declareParameters(new SqlParameter("in_tmsht_id_list", Types.VARCHAR),
+						new SqlParameter("in_mgr_emp_id_list", Types.VARCHAR),
+						new SqlParameter("in_tmsht_id_count", Types.INTEGER),
+						new SqlParameter("in_mgr_emp_id_count", Types.INTEGER),
+						new SqlOutParameter("out_result", Types.BOOLEAN));
 
-		return false;
+		Map<String, Object> execute = call
+				.execute(new MapSqlParameterSource("in_tmsht_id_list", timesheetIdsListAsString)
+						.addValue("in_mgr_emp_id_list", managerEmployeeIdsAsString)
+						.addValue("in_tmsht_id_count", timesheetIds.size())
+						.addValue("in_mgr_emp_id_count", managerEmployeeIds.size()).getValues());
+		String spResult = execute.get("out_result").toString();
+		LOGGER.debug("Stored procedure spInsertTimesheetApprovals executed with return value: " + spResult);
+		return spResult.equalsIgnoreCase("true");
+
 	}
 
 }
