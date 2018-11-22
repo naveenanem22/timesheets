@@ -138,7 +138,8 @@ public class ResourceAllocationDaoImpl implements ResourceAllocationDao {
 		sql.append("WHERE ra_emp_id = :ra_emp_id");
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		paramMap.put("ra_emp_id", employeeId);
-		List<ResourceAllocation> resourceAllocations = namedParameterJdbcTemplate.query(sql.toString(), paramMap, new ResourceAllocationRowMapper());
+		List<ResourceAllocation> resourceAllocations = namedParameterJdbcTemplate.query(sql.toString(), paramMap,
+				new ResourceAllocationRowMapper());
 		LOGGER.debug("Fetch SUCCESS");
 		LOGGER.debug("Fetched resourceAllocations {} for the employeeId {}", resourceAllocations.toString(),
 				employeeId);
@@ -172,18 +173,17 @@ public class ResourceAllocationDaoImpl implements ResourceAllocationDao {
 			Task task = new Task();
 			task.setId(rs.getInt("tsk_id"));
 			task.setName(rs.getString("tsk_name"));
-			task.setProject(project);
-			
+
 			Employee resource = new Employee();
 			resource.setFirstName(rs.getString("emp_firstname"));
 			resource.setLastName(rs.getString("emp_lastname"));
-			
 
 			ResourceAllocation resourceAllocation = new ResourceAllocation();
 			resourceAllocation.setTask(task);
 			resourceAllocation.setId(rs.getInt("ra_id"));
 			resourceAllocation.setNotes(rs.getString("ra_notes"));
 			resourceAllocation.setResource(resource);
+			resourceAllocation.setProject(project);
 
 			return resourceAllocation;
 		}

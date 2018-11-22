@@ -2,8 +2,13 @@ package com.tmsht.model;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.pmt.model.Employee;
+import com.tmsht.custom.serializer.EmployeeInResourceAllocationSerializer;
+import com.tmsht.custom.serializer.ProjectInResourceAllocationSerializer;
+import com.tmsht.custom.serializer.TaskInResourceAllocationSerializer;
 
 public class ResourceAllocation {
 
@@ -11,22 +16,34 @@ public class ResourceAllocation {
 	private int id;
 
 	@JsonProperty(value = "task'")
+	@JsonSerialize(using = TaskInResourceAllocationSerializer.class)
 	private Task task;
 
 	@JsonProperty(value = "resource")
+	@JsonSerialize(using = EmployeeInResourceAllocationSerializer.class)
 	private Employee resource;
 
-	@JsonProperty(value = "resources")
 	private List<Employee> resources;
 
-	@JsonProperty(value = "tasks")
 	private List<Task> tasks;
 
 	@JsonProperty(value = "notes")
 	private String notes;
 
+	@JsonProperty(value = "project")
+	@JsonSerialize(using = ProjectInResourceAllocationSerializer.class)
+	private Project project;
+
 	public ResourceAllocation() {
 
+	}
+
+	public Project getProject() {
+		return project;
+	}
+
+	public void setProject(Project project) {
+		this.project = project;
 	}
 
 	public String getNotes() {
@@ -53,29 +70,24 @@ public class ResourceAllocation {
 		this.resource = resource;
 	}
 
+	@JsonIgnore
 	public List<Employee> getResources() {
 		return resources;
 	}
 
+	@JsonProperty(value = "resources")
 	public void setResources(List<Employee> resources) {
 		this.resources = resources;
 	}
 
+	@JsonIgnore
 	public List<Task> getTasks() {
 		return tasks;
 	}
 
+	@JsonProperty(value = "tasks")
 	public void setTasks(List<Task> tasks) {
 		this.tasks = tasks;
-	}
-
-	public boolean isAllocationByTask() {
-		return this.task != null;
-	}
-
-	public boolean isAllocationByResource() {
-		return this.resource != null;
-
 	}
 
 	public int getId() {

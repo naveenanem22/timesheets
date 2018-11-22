@@ -56,7 +56,7 @@ public class TaskAllocationController {
 			@PathVariable("employeeId") int employeeId) {
 
 		return new ResponseEntity<List<ResourceAllocation>>(
-				resourceAllocationService.getResourceAllocationsByResourceId(employeeId), HttpStatus.ACCEPTED);
+				resourceAllocationService.getResourceAllocationsByResourceId(employeeId), HttpStatus.OK);
 
 	}
 
