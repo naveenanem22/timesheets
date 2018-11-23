@@ -147,8 +147,23 @@ public class ResourceAllocationDaoImpl implements ResourceAllocationDao {
 	}
 
 	@Override
-	public Set<Integer> fetchResourceAllocationIdsByTaskId(int taskId) {
-		return null;
+	public List<ResourceAllocation> fetchResourceAllocationIdsByTaskId(int taskId) {
+		LOGGER.debug("Fetching resource-allocations for taskId: {}", taskId);
+		StringBuilder sql = new StringBuilder();
+		sql.append("SELECT ra_id, ra_notes, tsk_id, tsk_name, emp_firstname, emp_lastname, prj_id, prj_project_id ");
+		sql.append("FROM resourceallocation ");
+		sql.append("INNER JOIN task ON ra_tsk_id = tsk_id ");
+		sql.append("INNER JOIN project ON tsk_prj_id = prj_id ");
+		sql.append("INNER JOIN employee ON ra_emp_id = emp_id ");
+		sql.append("WHERE ra_tsk_id = :ra_tsk_id");
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("ra_tsk_id", taskId);
+		List<ResourceAllocation> resourceAllocations = namedParameterJdbcTemplate.query(sql.toString(), paramMap,
+				new ResourceAllocationRowMapper());
+		LOGGER.debug("Fetch SUCCESS");
+		LOGGER.debug("Fetched resourceAllocations {} for the taskId {}", resourceAllocations.toString(), taskId);
+		return resourceAllocations;
+
 	}
 
 	private static class ResourceAllocationIdRowMapper implements RowMapper<Integer> {

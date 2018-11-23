@@ -14,7 +14,6 @@ public class TaskInResourceAllocationSerializer extends JsonSerializer<Task> {
 		gen.writeStartObject();
 		gen.writeNumberField("id", task.getId());
 		gen.writeStringField("taskName", task.getName());
-		gen.writeObjectField("project", task.getProject());
 		gen.writeEndObject();
 
 	}

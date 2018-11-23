@@ -53,4 +53,10 @@ public class ResourceAllocationServiceImpl implements ResourceAllocationService 
 		return resourceAllocationDao.fetchResourceAllocationIdsByResourceId(employeeId);
 	}
 
+	@Override
+	public List<ResourceAllocation> getResourceAllocationsByTaskId(int taskId) {
+		LOGGER.debug("Fetching resource-allocation records for taskId {}", taskId);
+		return resourceAllocationDao.fetchResourceAllocationIdsByTaskId(taskId);
+	}
+
 }

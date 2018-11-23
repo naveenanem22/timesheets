@@ -13,6 +13,8 @@ public interface ResourceAllocationService {
 	boolean createResourceAllocationByResource(List<Task> tasks, Employee employee, String notes);
 
 	boolean removeResourceAllocationById(Set<Integer> resourceAllocationIds);
-	
+
 	List<ResourceAllocation> getResourceAllocationsByResourceId(int employeeId);
+
+	List<ResourceAllocation> getResourceAllocationsByTaskId(int taskId);
 }

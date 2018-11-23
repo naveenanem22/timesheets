@@ -17,6 +17,6 @@ public interface ResourceAllocationDao {
 	
 	List<ResourceAllocation> fetchResourceAllocationIdsByResourceId(int employeeId);
 	
-	Set<Integer> fetchResourceAllocationIdsByTaskId(int taskId);
+	List<ResourceAllocation> fetchResourceAllocationIdsByTaskId(int taskId);
 
 }

@@ -18,30 +18,39 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.pmt.model.Employee;
 import com.tmsht.model.ResourceAllocation;
+import com.tmsht.model.Task;
 import com.tmsht.service.ResourceAllocationService;
 
-@RestController(value = "taskAllocationController")
-@RequestMapping(path = "/employees/{employeeId}/resourceAllocations")
-public class TaskAllocationController {
+@RestController(value = "resourceAllocationController")
+@RequestMapping(path = "/tasks/{taskId}/resourceAllocations")
+public class ResourceAllocationController {
 
 	@Autowired
 	@Qualifier(value = "resourceAllocationServiceImpl")
 	private ResourceAllocationService resourceAllocationService;
-	
-	
+
+	@Autowired
+	@Qualifier(value = "taskAllocationController")
+	private TaskAllocationController taskAllocationController;
+
+	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<ResourceAllocation>> listResourceAllocationsByTask(@PathVariable("taskId") int taskId) {
+
+		return new ResponseEntity<List<ResourceAllocation>>(
+				resourceAllocationService.getResourceAllocationsByTaskId(taskId), HttpStatus.OK);
+	}
 
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Object> allocateTasks(@Valid @RequestBody ResourceAllocation resourceAllocation,
-			@PathVariable("employeeId") int employeeId) {
-		Employee employee = new Employee();
-		employee.setId(employeeId);
+	public ResponseEntity<Object> allocateResources(@Valid @RequestBody ResourceAllocation resourceAllocation,
+			@PathVariable("taskId") int taskId) {
+		Task task = new Task();
+		task.setId(taskId);
 
-		resourceAllocation.setResource(employee);
+		resourceAllocation.setTask(task);
 
-		resourceAllocationService.createResourceAllocationByResource(resourceAllocation.getTasks(),
-				resourceAllocation.getResource(), resourceAllocation.getNotes());
+		resourceAllocationService.createResourceAllocationByTask(resourceAllocation.getResources(),
+				resourceAllocation.getTask(), resourceAllocation.getNotes());
 
 		return ResponseEntity.noContent().build();
 
@@ -49,17 +58,7 @@ public class TaskAllocationController {
 
 	@DeleteMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Object> deallocateTasks(@Valid @RequestBody Set<Integer> resourceAllocationIds) {
-		resourceAllocationService.removeResourceAllocationById(resourceAllocationIds);
-		return ResponseEntity.noContent().build();
-	}
-
-	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<ResourceAllocation>> fetchResourceAllocations(
-			@PathVariable("employeeId") int employeeId) {
-
-		return new ResponseEntity<List<ResourceAllocation>>(
-				resourceAllocationService.getResourceAllocationsByResourceId(employeeId), HttpStatus.OK);
-
+		return taskAllocationController.deallocateTasks(resourceAllocationIds);
 	}
 
 }
