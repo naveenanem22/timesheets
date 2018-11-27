@@ -13,6 +13,9 @@ public class Project {
 	@JsonProperty(value = "tasks")
 	private List<Task> tasks;
 
+	@JsonProperty(value = "title")
+	private String name;
+
 	@JsonProperty(value = "projectId")
 	private String projectId;
 
@@ -37,8 +40,38 @@ public class Project {
 	@JsonProperty(value = "status")
 	private String status;
 
+	@JsonProperty(value = "notes")
+	private String notes;
+
+	@JsonProperty(value = "customer")
+	private Customer customer;
+
 	public Project() {
 
+	}
+
+	public Customer getCustomer() {
+		return customer;
+	}
+
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getNotes() {
+		return notes;
+	}
+
+	public void setNotes(String notes) {
+		this.notes = notes;
 	}
 
 	public int getId() {
@@ -123,12 +156,11 @@ public class Project {
 
 	@Override
 	public String toString() {
-		return "Project [id=" + id + ", tasks=" + tasks + ", projectId=" + projectId + ", serviceType=" + serviceType
-				+ ", description=" + description + ", plannedStartDate=" + plannedStartDate + ", plannedEndDate="
-				+ plannedEndDate + ", actualStartDate=" + actualStartDate + ", actualEndDate=" + actualEndDate
-				+ ", status=" + status + "]";
+		return "Project [id=" + id + ", tasks=" + tasks + ", name=" + name + ", projectId=" + projectId
+				+ ", serviceType=" + serviceType + ", description=" + description + ", plannedStartDate="
+				+ plannedStartDate + ", plannedEndDate=" + plannedEndDate + ", actualStartDate=" + actualStartDate
+				+ ", actualEndDate=" + actualEndDate + ", status=" + status + ", notes=" + notes + ", customer="
+				+ customer + "]";
 	}
-	
-	
 
 }
