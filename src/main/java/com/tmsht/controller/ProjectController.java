@@ -48,14 +48,15 @@ public class ProjectController {
 
 	@PutMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Object> updateProject(@Valid @RequestBody Project project,
-			@PathVariable("id") String projectId) {
+			@PathVariable("id") int projectId) {
+		project.setId(projectId);
 		projectService.updateProject(project);
 		return ResponseEntity.noContent().build();
 
 	}
 
 	@DeleteMapping(path = "/{id}")
-	public ResponseEntity<Object> deleteProject(int projectId) {
+	public ResponseEntity<Object> deleteProject(@Valid @PathVariable("id") int projectId) {
 		projectService.deleteProejctById(projectId);
 		return ResponseEntity.noContent().build();
 	}

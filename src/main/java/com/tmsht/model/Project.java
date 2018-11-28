@@ -34,6 +34,12 @@ public class Project {
 	@JsonProperty(value = "actualStartDate")
 	private LocalDate actualStartDate;
 
+	@JsonProperty(value = "createdDate")
+	private LocalDate createdDate;
+
+	@JsonProperty(value = "updatedDate")
+	private LocalDate updatedDate;
+
 	@JsonProperty(value = "actualEndDate")
 	private LocalDate actualEndDate;
 
@@ -48,6 +54,22 @@ public class Project {
 
 	public Project() {
 
+	}
+
+	public LocalDate getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(LocalDate createdDate) {
+		this.createdDate = createdDate;
+	}
+
+	public LocalDate getUpdatedDate() {
+		return updatedDate;
+	}
+
+	public void setUpdatedDate(LocalDate updatedDate) {
+		this.updatedDate = updatedDate;
 	}
 
 	public Customer getCustomer() {

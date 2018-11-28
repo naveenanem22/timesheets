@@ -2,6 +2,8 @@ package com.tmsht.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.ZoneOffset;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +24,7 @@ import org.springframework.stereotype.Repository;
 import com.pmt.custom.exceptions.InternalServerException;
 import com.tmsht.model.Customer;
 import com.tmsht.model.Project;
+
 @Repository(value = "projectDaoImpl")
 public class ProjectDaoImpl implements ProjectDao {
 
@@ -59,6 +62,10 @@ public class ProjectDaoImpl implements ProjectDao {
 		keyColumnNames[0] = "prj_id";
 		int numberOfRowsAffected = 0;
 
+		LOGGER.debug("Updating project object with Audit field values");
+		project.setCreatedDate(LocalDate.now(ZoneOffset.UTC));
+		project.setUpdatedDate(LocalDate.now(ZoneOffset.UTC));
+
 		sql.append("INSERT INTO project ");
 		sql.append("(");
 		sql.append("prj_name, prj_project_id, prj_service_type, prj_description, prj_planned_start_date, ");
@@ -82,6 +89,8 @@ public class ProjectDaoImpl implements ProjectDao {
 					.addValue("prj_planned_end_date", project.getPlannedEndDate())
 					.addValue("prj_actual_start_date", project.getActualStartDate())
 					.addValue("prj_actual_end_date", project.getActualEndDate())
+					.addValue("prj_created_date", project.getCreatedDate())
+					.addValue("prj_updated_date", project.getUpdatedDate())
 					.addValue("prj_status", project.getStatus()).addValue("prj_cust_id", project.getCustomer().getId())
 					.addValue("prj_notes", project.getNotes());
 			numberOfRowsAffected = namedParameterJdbcTemplate.update(sql.toString(), paramSource, projectKey);
