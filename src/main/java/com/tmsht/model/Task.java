@@ -1,5 +1,7 @@
 package com.tmsht.model;
 
+import java.time.LocalDate;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Task {
@@ -15,9 +17,30 @@ public class Task {
 
 	@JsonProperty(value = "project")
 	private Project project;
+	@JsonProperty(value = "startDate")
+	private LocalDate startDate;
+
+	@JsonProperty(value = "endDate")
+	private LocalDate endDate;
 
 	public Task() {
 
+	}
+
+	public LocalDate getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(LocalDate startDate) {
+		this.startDate = startDate;
+	}
+
+	public LocalDate getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(LocalDate endDate) {
+		this.endDate = endDate;
 	}
 
 	public Project getProject() {
@@ -54,7 +77,8 @@ public class Task {
 
 	@Override
 	public String toString() {
-		return "Task [id=" + id + ", name=" + name + ", description=" + description + ", project=" + project + "]";
+		return "Task [id=" + id + ", name=" + name + ", description=" + description + ", project=" + project
+				+ ", startDate=" + startDate + ", endDate=" + endDate + "]";
 	}
 
 }

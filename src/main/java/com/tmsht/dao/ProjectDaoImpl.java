@@ -22,6 +22,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import com.pmt.custom.exceptions.InternalServerException;
+import com.pmt.custom.exceptions.RecordNotFoundException;
 import com.tmsht.model.Customer;
 import com.tmsht.model.Project;
 
@@ -191,7 +192,7 @@ public class ProjectDaoImpl implements ProjectDao {
 			projects = namedParameterJdbcTemplate.query(sql.toString(), paramMap, new ProjectRowMapper());
 		} catch (DataAccessException e) {
 			e.printStackTrace();
-			throw new InternalServerException("Unexpected error occurred while updating project");
+			throw new InternalServerException("Unexpected error occurred while fetching the project");
 		}
 		if (projects.size() == 1) {
 			LOGGER.debug("Fetched Project details: {}", projects.get(0).toString());
@@ -200,7 +201,7 @@ public class ProjectDaoImpl implements ProjectDao {
 			LOGGER.debug("Error while fetching the project with id: {}", projectId);
 			LOGGER.debug("Total count of fetched projects: {} with projectID: {} is not equal to 1", projects.size(),
 					projectId);
-			throw new InternalServerException("Unexpected error occurred while updating project");
+			throw new RecordNotFoundException("Project with id: "+projectId+" not found");
 		}
 	}
 
