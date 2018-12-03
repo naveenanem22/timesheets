@@ -25,7 +25,7 @@ import com.tmsht.model.Task;
 import com.tmsht.service.TaskService;
 
 @RestController("taskController")
-@RequestMapping("/task-management/tasks")
+@RequestMapping("/v0/task-management/tasks")
 @Validated
 public class TaskController {
 

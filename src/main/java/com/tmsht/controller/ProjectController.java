@@ -24,7 +24,7 @@ import com.tmsht.model.Project;
 import com.tmsht.service.ProjectService;
 
 @RestController(value = "projectController")
-@RequestMapping("/project-management/projects")
+@RequestMapping("/v0/project-management/projects")
 public class ProjectController {
 
 	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
