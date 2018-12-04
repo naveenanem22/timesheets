@@ -21,8 +21,8 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import com.pmt.custom.exceptions.InternalServerException;
-import com.pmt.custom.exceptions.RecordNotFoundException;
+import com.pc.customexceptions.InternalServerException;
+import com.pc.customexceptions.RecordNotFoundException;
 import com.tmsht.model.Customer;
 import com.tmsht.model.Project;
 
@@ -91,9 +91,8 @@ public class ProjectDaoImpl implements ProjectDao {
 					.addValue("prj_actual_start_date", project.getActualStartDate())
 					.addValue("prj_actual_end_date", project.getActualEndDate())
 					.addValue("prj_created_date", project.getCreatedDate())
-					.addValue("prj_updated_date", project.getUpdatedDate())
-					.addValue("prj_status", project.getStatus()).addValue("prj_cust_id", project.getCustomer().getId())
-					.addValue("prj_notes", project.getNotes());
+					.addValue("prj_updated_date", project.getUpdatedDate()).addValue("prj_status", project.getStatus())
+					.addValue("prj_cust_id", project.getCustomer().getId()).addValue("prj_notes", project.getNotes());
 			numberOfRowsAffected = namedParameterJdbcTemplate.update(sql.toString(), paramSource, projectKey);
 		} catch (DataAccessException e) {
 			e.printStackTrace();
@@ -201,7 +200,7 @@ public class ProjectDaoImpl implements ProjectDao {
 			LOGGER.debug("Error while fetching the project with id: {}", projectId);
 			LOGGER.debug("Total count of fetched projects: {} with projectID: {} is not equal to 1", projects.size(),
 					projectId);
-			throw new RecordNotFoundException("Project with id: "+projectId+" not found");
+			throw new RecordNotFoundException("Project with id: " + projectId + " not found");
 		}
 	}
 

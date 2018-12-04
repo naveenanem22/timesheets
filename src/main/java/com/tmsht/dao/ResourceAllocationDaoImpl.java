@@ -18,7 +18,7 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.pmt.custom.exceptions.InternalServerException;
+import com.pc.customexceptions.InternalServerException;
 import com.pmt.model.Employee;
 import com.tmsht.model.Project;
 import com.tmsht.model.ResourceAllocation;
