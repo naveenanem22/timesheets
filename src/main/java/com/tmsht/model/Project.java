@@ -1,10 +1,14 @@
 package com.tmsht.model;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.pc.deserializers.JsonDateDeserializer;
+import com.pc.serializers.JsonDateSerializer;
 import com.tmsht.custom.serializer.CustomerInProjectSerializer;
 
 public class Project {
@@ -37,10 +41,14 @@ public class Project {
 	private LocalDate actualStartDate;
 
 	@JsonProperty(value = "createdDate")
-	private LocalDate createdDate;
+	@JsonSerialize(using = JsonDateSerializer.class)
+	@JsonDeserialize(using = JsonDateDeserializer.class)
+	private LocalDateTime createdDate;
 
 	@JsonProperty(value = "updatedDate")
-	private LocalDate updatedDate;
+	@JsonSerialize(using = JsonDateSerializer.class)
+	@JsonDeserialize(using = JsonDateDeserializer.class)
+	private LocalDateTime updatedDate;
 
 	@JsonProperty(value = "actualEndDate")
 	private LocalDate actualEndDate;
@@ -59,19 +67,19 @@ public class Project {
 
 	}
 
-	public LocalDate getCreatedDate() {
+	public LocalDateTime getCreatedDate() {
 		return createdDate;
 	}
 
-	public void setCreatedDate(LocalDate createdDate) {
+	public void setCreatedDate(LocalDateTime createdDate) {
 		this.createdDate = createdDate;
 	}
 
-	public LocalDate getUpdatedDate() {
+	public LocalDateTime getUpdatedDate() {
 		return updatedDate;
 	}
 
-	public void setUpdatedDate(LocalDate updatedDate) {
+	public void setUpdatedDate(LocalDateTime updatedDate) {
 		this.updatedDate = updatedDate;
 	}
 

@@ -3,6 +3,10 @@ package com.tmsht.model;
 import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.pc.deserializers.JsonDateDeserializer;
+import com.pc.serializers.JsonDateSerializer;
 
 public class Task {
 
@@ -17,10 +21,15 @@ public class Task {
 
 	@JsonProperty(value = "project")
 	private Project project;
+
 	@JsonProperty(value = "startDate")
+	@JsonSerialize(using = JsonDateSerializer.class)
+	@JsonDeserialize(using = JsonDateDeserializer.class)
 	private LocalDate startDate;
 
 	@JsonProperty(value = "endDate")
+	@JsonSerialize(using = JsonDateSerializer.class)
+	@JsonDeserialize(using = JsonDateDeserializer.class)
 	private LocalDate endDate;
 
 	public Task() {

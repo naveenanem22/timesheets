@@ -3,6 +3,7 @@ package com.tmsht.dao;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.HashMap;
 import java.util.List;
@@ -64,8 +65,8 @@ public class ProjectDaoImpl implements ProjectDao {
 		int numberOfRowsAffected = 0;
 
 		LOGGER.debug("Updating project object with Audit field values");
-		project.setCreatedDate(LocalDate.now(ZoneOffset.UTC));
-		project.setUpdatedDate(LocalDate.now(ZoneOffset.UTC));
+		project.setCreatedDate(LocalDateTime.now(ZoneOffset.UTC));
+		project.setUpdatedDate(LocalDateTime.now(ZoneOffset.UTC));
 
 		sql.append("INSERT INTO project ");
 		sql.append("(");
@@ -214,6 +215,7 @@ public class ProjectDaoImpl implements ProjectDao {
 			customer.setId(rs.getInt("prj_cust_id"));
 			project.setActualEndDate(rs.getDate("prj_actual_end_date").toLocalDate());
 			project.setActualStartDate(rs.getDate("prj_actual_start_date").toLocalDate());
+			project.setCreatedDate(rs.getTimestamp("prj_created_date").toLocalDateTime());
 			project.setCustomer(customer);
 			project.setDescription(rs.getString("prj_description"));
 			project.setId(rs.getInt("prj_id"));
@@ -224,6 +226,7 @@ public class ProjectDaoImpl implements ProjectDao {
 			project.setProjectId(rs.getString("prj_project_id"));
 			project.setServiceType(rs.getString("prj_service_type"));
 			project.setStatus(rs.getString("prj_status"));
+			project.setUpdatedDate(rs.getTimestamp("prj_updated_date").toLocalDateTime());
 
 			return project;
 		}

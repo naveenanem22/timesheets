@@ -4,6 +4,10 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.pc.deserializers.JsonDateDeserializer;
+import com.pc.serializers.JsonDateSerializer;
 
 public class Timesheet {
 
@@ -14,9 +18,13 @@ public class Timesheet {
 	private Task task;
 
 	@JsonProperty(value = "project")
+	@JsonSerialize(using = JsonDateSerializer.class)
+	@JsonDeserialize(using = JsonDateDeserializer.class)
 	private Project project;
 
 	@JsonProperty(value = "date")
+	@JsonSerialize(using = JsonDateSerializer.class)
+	@JsonDeserialize(using = JsonDateDeserializer.class)
 	private LocalDate date;
 
 	@JsonProperty(value = "startTime")
@@ -93,7 +101,5 @@ public class Timesheet {
 		return "Timesheet [id=" + id + ", task=" + task + ", project=" + project + ", date=" + date + ", startTime="
 				+ startTime + ", endTime=" + endTime + ", status=" + status + "]";
 	}
-	
-	
 
 }
