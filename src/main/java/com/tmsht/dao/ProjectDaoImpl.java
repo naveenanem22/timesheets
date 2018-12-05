@@ -21,8 +21,8 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import com.pc.customexceptions.InternalServerException;
-import com.pc.customexceptions.RecordNotFoundException;
+import com.pc.custom.exceptions.InternalServerException;
+import com.pc.custom.exceptions.RecordNotFoundException;
 import com.tmsht.model.Customer;
 import com.tmsht.model.Project;
 

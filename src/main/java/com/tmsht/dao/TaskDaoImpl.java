@@ -22,7 +22,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import com.pc.customexceptions.InternalServerException;
+import com.pc.custom.exceptions.InternalServerException;
 import com.tmsht.model.Task;
 
 @Repository(value = "taskDaoImpl")
